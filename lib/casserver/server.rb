@@ -762,6 +762,7 @@ module CASServer
 
     def service_allowed?(service)
        uri_domain = URI(service).host
+       $LOG.debug("Service domain: #{uri_domain}")
        allowed_hosts = settings.config[:allowed_service_hosts] rescue []
        if allowed_hosts.include? uri_domain
          return true
