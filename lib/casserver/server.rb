@@ -291,6 +291,7 @@ module CASServer
 
       # optional params
       @service = clean_service_url(params['service'])
+      return unless service_allowed?(@service)
       @renew = params['renew']
       @gateway = params['gateway'] == 'true' || params['gateway'] == '1'
 
@@ -383,7 +384,7 @@ module CASServer
 
       # 2.2.1 (optional)
       @service = clean_service_url(params['service'])
-
+      return unless service_allowed?(@service)
       # 2.2.2 (required)
       @username = params['username']
       @password = params['password']
@@ -501,6 +502,7 @@ module CASServer
       # message, allowing for an opportunity to immediately log back in. This makes it
       # easier for the user to log out and log in as someone else.
       @service = clean_service_url(params['service'] || params['destination'])
+      return unless service_allowed?(@service)
       @continue_url = params['url']
 
       @gateway = params['gateway'] == 'true' || params['gateway'] == '1'
@@ -762,7 +764,6 @@ module CASServer
 
     def service_allowed?(service)
        uri_domain = URI(service).host
-       $LOG.debug("Service domain: #{uri_domain}")
        allowed_hosts = settings.config[:allowed_service_hosts] rescue []
        if allowed_hosts.include? uri_domain
          return true
