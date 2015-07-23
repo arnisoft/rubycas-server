@@ -590,9 +590,9 @@ module CASServer
     get "#{uri_path}/validate" do
       CASServer::Utils::log_controller_action(self.class, params)
 
-      if ip_allowed?(request.ip)
-        # required
-        @service = clean_service_url(params['service'])
+      @service = clean_service_url(params['service'])
+      if ip_allowed?(request.ip) && service_allowed?(@service)
+        # required      
         @ticket = params['ticket']
         # optional
         @renew = params['renew']
@@ -621,9 +621,9 @@ module CASServer
       # force xml content type
       content_type 'text/xml', :charset => 'utf-8'
 
-      if ip_allowed?(request.ip)
-        # required
-        @service = clean_service_url(params['service'])
+      @service = clean_service_url(params['service'])
+      if ip_allowed?(request.ip) && service_allowed?(@service)
+        # required        
         @ticket = params['ticket']
         # optional
         @pgt_url = params['pgtUrl']
@@ -660,10 +660,8 @@ module CASServer
       # force xml content type
       content_type 'text/xml', :charset => 'utf-8'
 
-      if ip_allowed?(request.ip)
-
-        # required
-        @service = clean_service_url(params['service'])
+      @service = clean_service_url(params['service'])
+      if ip_allowed?(request.ip) && service_allowed?(@service)
         @ticket = params['ticket']
         # optional
         @pgt_url = params['pgtUrl']
@@ -760,6 +758,16 @@ module CASServer
       allowed_ips = Array(settings.config[:allowed_service_ips])
 
       allowed_ips.empty? || allowed_ips.any? { |i| IPAddr.new(i) === ip }
+    end
+
+    def service_allowed?(service)
+       uri_domain = URI(service).host
+       allowed_hosts = settings.config[:allowed_service_hosts] rescue []
+       if allowed_hosts.include? uri_domain
+         return true
+       else
+         return false
+       end
     end
 
     helpers do
