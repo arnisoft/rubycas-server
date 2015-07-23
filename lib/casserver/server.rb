@@ -291,7 +291,10 @@ module CASServer
 
       # optional params
       @service = clean_service_url(params['service'])
-      return unless service_allowed?(@service)
+      unless service_allowed?(@service)
+        status 401 
+        return 
+      end
       @renew = params['renew']
       @gateway = params['gateway'] == 'true' || params['gateway'] == '1'
 
@@ -384,7 +387,10 @@ module CASServer
 
       # 2.2.1 (optional)
       @service = clean_service_url(params['service'])
-      return unless service_allowed?(@service)
+      unless service_allowed?(@service)
+        status 401 
+        return 
+      end
       # 2.2.2 (required)
       @username = params['username']
       @password = params['password']
@@ -764,7 +770,6 @@ module CASServer
 
     def service_allowed?(service)
        uri_domain = URI(service).host
-       $LOG.debug("Service domain: #{uri_domain}")
        allowed_hosts = settings.config[:allowed_service_hosts] rescue []
        if allowed_hosts.include? uri_domain
          return true
