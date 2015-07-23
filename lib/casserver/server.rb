@@ -291,6 +291,7 @@ module CASServer
 
       # optional params
       @service = clean_service_url(params['service'])
+      return unless service_allowed?(@service)
       @renew = params['renew']
       @gateway = params['gateway'] == 'true' || params['gateway'] == '1'
 
@@ -315,7 +316,7 @@ module CASServer
       end
 
       begin
-        if @service && service_allowed?(@service)
+        if @service
           if @renew
             $LOG.info("Authentication renew explicitly requested. Proceeding with CAS login for service #{@service.inspect}.")
           elsif tgt && !tgt_error
@@ -383,7 +384,7 @@ module CASServer
 
       # 2.2.1 (optional)
       @service = clean_service_url(params['service'])
-      status 401 unless service_allowed?(@service)
+      return unless service_allowed?(@service)
       # 2.2.2 (required)
       @username = params['username']
       @password = params['password']
