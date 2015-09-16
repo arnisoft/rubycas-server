@@ -387,10 +387,10 @@ module CASServer
 
       # 2.2.1 (optional)
       @service = clean_service_url(params['service'])
-      unless service_allowed?(@service)
-        status 401 
-        return 
-      end
+      # unless service_allowed?(@service)
+      #   status 401
+      #   return
+      # end
       # 2.2.2 (required)
       @username = params['username']
       @password = params['password']
@@ -693,7 +693,10 @@ module CASServer
             @pgtiou = pgt.iou if pgt
           end
 
-          @extra_attributes = t.granted_by_tgt.extra_attributes || {}
+          @extra_attributes = {}
+          unless t.granted_by_tgt.nil?
+            @extra_attributes = t.granted_by_tgt.extra_attributes
+          end
         end
       else
         @success = false
