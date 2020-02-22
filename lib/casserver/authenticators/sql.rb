@@ -161,6 +161,6 @@ class CASServer::Authenticators::SQL < CASServer::Authenticators::Base
   end
 
   def matching_users
-    user_model.find(:all, :conditions => ["#{username_column} = ? AND #{password_column} = ?", @username, @password])
+    user_model.where("#{username_column} = ? AND #{password_column} = ?", @username, @password).to_a
   end
 end

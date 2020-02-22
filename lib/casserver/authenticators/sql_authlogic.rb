@@ -92,6 +92,6 @@ class CASServer::Authenticators::SQLAuthlogic < CASServer::Authenticators::SQL
   protected
 
   def matching_users
-    user_model.find(:all, :conditions => ["#{username_column} = ?", @username])
+    user_model.where("#{username_column} = ?", @username).to_a
   end
 end
