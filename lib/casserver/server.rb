@@ -530,7 +530,7 @@ module CASServer
 
           pgts = CASServer::Model::ProxyGrantingTicket.
             where(CASServer::Model::ServiceTicket.quoted_table_name+".username = ?", tgt.username).
-            includes(:service_ticket).
+            joins(:service_ticket).
             to_a
           pgts.each do |pgt|
             $LOG.debug("Deleting Proxy-Granting Ticket '#{pgt}' for user '#{pgt.service_ticket.username}'")
