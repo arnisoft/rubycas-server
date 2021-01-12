@@ -1,6 +1,6 @@
 $gemspec = Gem::Specification.new do |s|
   s.name     = 'rubycas-server'
-  s.version  = '1.1.4.beta2'
+  s.version  = '1.1.4.beta3'
   s.authors  = ["Matt Zukowski", 'arnisoft']
   s.email    = ["ai@ormatek.com"]
   s.homepage = 'https://github.com/arnisoft/rubycas-server'
@@ -28,6 +28,7 @@ $gemspec = Gem::Specification.new do |s|
 
   s.add_dependency("activerecord", "6.0.3.4")
   s.add_dependency("activesupport", "6.0.3.4")
+  s.add_dependency('builder', '3.2.4')
   s.add_dependency("sinatra", "~> 1.0")
   s.add_dependency("sinatra-r18n", '~> 3.2.0')
   s.add_dependency("crypt-isaac", "~> 0.9.1")
