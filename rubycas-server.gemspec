@@ -1,6 +1,6 @@
 $gemspec = Gem::Specification.new do |s|
   s.name     = 'rubycas-server'
-  s.version  = '1.1.4.beta3'
+  s.version  = '1.1.5.beta5'
   s.authors  = ["Matt Zukowski", 'arnisoft']
   s.email    = ["ai@ormatek.com"]
   s.homepage = 'https://github.com/arnisoft/rubycas-server'
@@ -23,8 +23,8 @@ $gemspec = Gem::Specification.new do |s|
 
   s.extra_rdoc_files = ["CHANGELOG", "LICENSE", "README.md"]
 
-  s.has_rdoc = true
-  s.post_install_message = "For more information on RubyCAS-Server, see http://rubycas.github.com"
+  #s.has_rdoc = true
+  #s.post_install_message = "For more information on RubyCAS-Server, see http://rubycas.github.com"
 
   s.add_dependency("activerecord", "6.0.3.4")
   s.add_dependency("activesupport", "6.0.3.4")
