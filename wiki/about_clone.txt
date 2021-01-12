@@ -1,0 +1,22 @@
+Гем был клонирован для того, чтобы освежить базовые гемы
+и получить возможность запуска на новых версиях ruby.
+
+Изначально проект запускался максимум на ruby 2.1, т.к.
+   rubycas-server 1.1.3.pre требует sinatra-r18n ~>1.1.0 (максимум 1.1.11),
+   который требует r18n-core =1.1.11, который вызывает Psych::ENGINE.
+
+При этом YAML::ENGINE выпилен в ruby 2.2, из-за чего при попытке запуска получаем
+   NameError: uninitialized constant Psych::ENGINE
+
+   https://github.com/rubycas/rubycas-server/issues/242
+   https://github.com/rubycas/rubycas-server/issues/250
+
+Сразу удалось обновить зависимость от синатры:
+  sinatra-r18n 1.1.x => 3.2.x
+после чего проект удалось завести на ruby 2.3
+
+Запуск под ruby 2.4 падал на константе Fixnum в геме builder 3.0, который притянулся для activemodel 3.2
+После обновления ActiveRecord/ActiveSupport до 4.2 - удалось завести под ruby 2.4.
+Но пришлось ещё заменить deprecated AR finders на Arel (гем activerecord-deprecated_finders не сработал)
+
+Пробовал дальнейший апгред до Rails 5.2 - не завелось.
