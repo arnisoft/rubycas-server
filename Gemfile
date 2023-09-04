@@ -8,5 +8,5 @@ group :ldap do
 end
 
 group :active_resource do
-  gem "activeresource", "5.1.1"
+  gem "activeresource", "6.0.0"
 end
