@@ -111,7 +111,7 @@ module CASServer
           require 'fileutils'
           default_config = File.dirname(__FILE__) + '/../../config/config.example.yml'
 
-          if !File.exists?(File.dirname(config_file))
+          unless File.exist?(File.dirname(config_file))
             print_cli_message "Creating config directory..."
             FileUtils.mkdir_p(File.dirname(config_file), :verbose => true)
           end
@@ -132,7 +132,7 @@ module CASServer
         raise e
       end
 
-      config.merge! HashWithIndifferentAccess.new(YAML.load(config_file))
+      config.merge! HashWithIndifferentAccess.new(YAML.load(config_file, aliases: true))
       set :server, config[:server] || 'webrick'
     end
 
@@ -159,12 +159,12 @@ module CASServer
         raise "The specified certificate file #{cert_path.inspect} does not exist or is not readable. " +
           " Your 'ssl_cert' configuration setting must be a path to a valid " +
           " ssl certificate." unless
-            File.exists? cert_path
+            File.exist?(cert_path)
 
         raise "The specified key file #{key_path.inspect} does not exist or is not readable. " +
           " Your 'ssl_key' configuration setting must be a path to a valid " +
           " ssl private key." unless
-            File.exists? key_path
+            File.exist?(key_path)
 
         require 'openssl'
         require 'webrick/https'
@@ -773,13 +773,12 @@ module CASServer
     end
 
     def service_allowed?(service)
-       uri_domain = URI(service).host
-       allowed_hosts = settings.config[:allowed_service_hosts] rescue []
-       if allowed_hosts.include? uri_domain
-         return true
-       else
-         return false
-       end
+      service = service.to_s
+      return false if service == ''
+      uri_domain = URI(service).host
+      return false if uri_domain.to_s == ''
+      allowed_hosts = settings.config[:allowed_service_hosts]
+      allowed_hosts.include?(uri_domain)
     end
 
     helpers do
