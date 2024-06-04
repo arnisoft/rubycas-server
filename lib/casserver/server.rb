@@ -132,7 +132,7 @@ module CASServer
         raise e
       end
 
-      config.merge! HashWithIndifferentAccess.new(YAML.load(config_file, aliases: true))
+      config.merge! HashWithIndifferentAccess.new(YAML.load(config_file))
       set :server, config[:server] || 'webrick'
     end
 
